@@ -3,17 +3,21 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const authRoute = require("./Routes/AuthRoute");
 
 dotenv.config();
 const config =require('./config/config')
 const app= express();
 
 app.use(cors({
+ methods:["GET","POST","PUT","DELETE"],
  credentials:true,
 }));
 // app.ption('*',cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express());
+app.use("/", authRoute);
 
 mongoose.connect(config.MONGODB_URI , {
 useNewUrlParser:true,
@@ -32,7 +36,7 @@ app.get('/', (req,res)=>{
  })
 })
 
-const Port = process.env.Port || 3000;
+const Port = process.env.Port || 4000;
 
 app.listen(Port,()=>{
  console.log("Server est en cour d'execution");
